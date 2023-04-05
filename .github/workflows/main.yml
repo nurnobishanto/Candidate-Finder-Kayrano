@@ -30,4 +30,3 @@ jobs:
           remote-host: ${{ secrets.server }}
           remote-user: ${{ secrets.username }}
           remote-password: ${{ secrets.password }}
-          remote-path: "/"
