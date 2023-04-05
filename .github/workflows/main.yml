@@ -1,32 +1,18 @@
-name: Deploy Files
-
-on:
-  push:
-    branches:
-      - master
-  # Enables manually triggering of Workflow with file synchronization option
-  workflow_dispatch:
-    inputs:
-      sync:
-        description: "File synchronization"
-        required: true
-        default: "delta"
-
+on: push
+name: 🚀 Deploy website on push
 jobs:
-  deploy-master:
-    name: "main branch"
-    if: ${{ github.ref == 'refs/heads/main' }}
+  web-deploy:
+    name: 🎉 Deploy
     runs-on: ubuntu-latest
-    timeout-minutes: 30
     steps:
-      - name: "Checkout"
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: "Deploy"
-        uses: milanmk/actions-file-deployer@master
-        with:
-          remote-protocol: "sftp"
-          remote-host: ${{ secrets.server }}
-          remote-user: ${{ secrets.username }}
-          remote-password: ${{ secrets.password }}
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v3
+    
+    - name: 📂 Sync files
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.ftp_server }}
+        username: ${{ secrets.ftp_username }}
+        password: ${{ secrets.ftp_password }}
+        protocol: ftps
+        port: 22
